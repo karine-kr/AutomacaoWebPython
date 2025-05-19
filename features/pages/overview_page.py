@@ -1,5 +1,6 @@
 from selenium.webdriver.common.by import By
 from .base_page import BasePage
+
 class OverviewPage(BasePage):
    FINISH_BUTTON = (By.ID, "finish")
    ERROR_MESSAGE = (By.CLASS_NAME, "error-message-container")

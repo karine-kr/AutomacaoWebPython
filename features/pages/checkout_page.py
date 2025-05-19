@@ -1,5 +1,6 @@
 from selenium.webdriver.common.by import By
 from .base_page import BasePage
+
 class CheckoutPage(BasePage):
    FIRST_NAME = (By.ID, "first-name")
    LAST_NAME = (By.ID, "last-name")

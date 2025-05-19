@@ -4,10 +4,8 @@ from selenium.webdriver.chrome.service import Service
 
 def before_all(context):
     try:
-        # Caminho para o chromedriver
         chromedriver_path = os.path.abspath("drivers/chromedriver.exe")
         service = Service(executable_path=chromedriver_path)
-        # Opções do Chrome
         options = webdriver.ChromeOptions()
         prefs = {
             "credentials_enable_service": False,
@@ -18,7 +16,6 @@ def before_all(context):
         options.add_argument("--disable-notifications")
         options.add_argument("--disable-infobars")
         options.add_argument("--incognito")
-        # Cria o driver corretamente com Service + Options
         context.driver = webdriver.Chrome(service=service, options=options)
         context.driver.implicitly_wait(10)
         

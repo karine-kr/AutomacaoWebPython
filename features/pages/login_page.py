@@ -1,5 +1,6 @@
 from selenium.webdriver.common.by import By
 from .base_page import BasePage
+
 class LoginPage(BasePage):
    URL = "https://www.saucedemo.com/"
    USERNAME = (By.ID, "user-name")
