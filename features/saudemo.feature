@@ -32,10 +32,10 @@ Funcionalidade: Automação do site SauceDemo
  Cenário: Finalizar compra com os dois itens mais caros (standard_user)
    Dado que estou na página de login
    Quando faço login com usuário "standard_user" e senha "secret_sauce"
-   E ordeno os itens do mais caro ao mais barato
-   E adiciono os dois itens mais caros ao carrinho
+   E adiciono os dois itens mais caros ao carrinho após ordenar por preço
    E finalizo a compra com os dados "karine", "teste", "12345"
    Então devo ver a mensagem "Thank you for your order!"
+
  Cenário: Tentativa de compra com erro (problem_user)
    Dado que estou na página de login
    Quando faço login com usuário "problem_user" e senha "secret_sauce"

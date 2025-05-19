@@ -42,17 +42,13 @@ def step_adiciona_produtos_se_existirem(context, produto1, produto2):
        if context.inventory.is_product_displayed(produto):
            context.inventory.add_product_by_name(produto)
        else:
-        #    print(f"[AVISO] Produto não encontrado na página: {produto}")
         assert False, f"Produto não encontrado na página: {produto}"
    context.inventory.go_to_cart()
 
-@when('ordeno os itens do mais caro ao mais barato')
-def step_sort_by_price_desc(context):
+@when("adiciono os dois itens mais caros ao carrinho após ordenar por preço")
+def step_sort_and_add_expensive(context):
     context.inventory = InventoryPage(context.driver)
     context.inventory.sort_by("Price (high to low)")
-
-@when("adiciono os dois itens mais caros ao carrinho")
-def step_add_most_expensive(context):
     context.inventory.add_most_expensive_items()
     context.inventory.go_to_cart()
 
