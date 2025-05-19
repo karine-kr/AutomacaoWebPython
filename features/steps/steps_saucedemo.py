@@ -4,6 +4,7 @@ from features.pages.inventory_page import InventoryPage
 from features.pages.cart_page import CartPage
 from features.pages.checkout_page import CheckoutPage
 from features.pages.overview_page import OverviewPage
+from selenium.webdriver.common.by import By
 
 @given("que estou na página de login")
 def step_open_login_page(context):
@@ -13,6 +14,7 @@ def step_open_login_page(context):
 @when('faço login com usuário "{username}" e senha "{password}"')
 def step_do_login(context, username, password):
     context.login_page.login(username, password)
+    context.inventory_page = InventoryPage(context.driver)
 
 @then("devo ver a página de inventário")
 def step_verify_inventory(context):
@@ -25,7 +27,6 @@ def step_verify_error_message(context, mensagem):
 
 @when("realizo logout")
 def step_logout(context):
-    from selenium.webdriver.common.by import By
     context.driver.find_element(By.ID, "react-burger-menu-btn").click()
     context.driver.find_element(By.ID, "logout_sidebar_link").click()
 
@@ -33,12 +34,17 @@ def step_logout(context):
 def step_verify_back_to_login(context):
     assert "saucedemo.com" in context.driver.current_url and "login" in context.driver.page_source
 
-@when('adiciono os produtos "{produto1}" e "{produto2}" ao carrinho')
-def step_add_multiple_products(context, produto1, produto2):
-    context.inventory = InventoryPage(context.driver)
-    context.inventory.add_product_by_name(produto1)
-    context.inventory.add_product_by_name(produto2)
-    context.inventory.go_to_cart()
+@when('adiciono ao carrinho os produtos "{produto1}" e "{produto2}" se estiverem disponíveis')
+def step_adiciona_produtos_se_existirem(context, produto1, produto2):
+   context.inventory = InventoryPage(context.driver)
+   produtos = [produto1, produto2]
+   for produto in produtos:
+       if context.inventory.is_product_displayed(produto):
+           context.inventory.add_product_by_name(produto)
+       else:
+        #    print(f"[AVISO] Produto não encontrado na página: {produto}")
+        assert False, f"Produto não encontrado na página: {produto}"
+   context.inventory.go_to_cart()
 
 @when('ordeno os itens do mais caro ao mais barato')
 def step_sort_by_price_desc(context):
