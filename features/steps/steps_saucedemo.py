@@ -31,14 +31,20 @@ def step_impl(context):
    assert "saucedemo.com" in context.driver.current_url
 
 @when('adiciono ao carrinho os produtos "{produto1}" e "{produto2}" se estiverem disponíveis')
-def step_impl(context, produto1, produto2):
-   context.inventory_page.adicionar_produto(produto1)
-   context.inventory_page.adicionar_produto(produto2)
-   context.inventory_page.acessar_carrinho()
-   context.cart_page = CartPage(context.driver)
+def step_adiciona_produtos_se_existirem(context, produto1, produto2):
+   context.inventory = InventoryPage(context.driver)
+   produtos = [produto1, produto2]
+   for produto in produtos:
+       if context.inventory.produto_disponivel(produto):
+           context.inventory.adicionar_produto(produto)
+       else:
+        assert False, f"Produto não encontrado na página: {produto}"
+   context.inventory.acessar_carrinho()
 
 @when('finalizo a compra com os dados "{nome}", "{sobrenome}", "{cep}"')
 def step_impl(context, nome, sobrenome, cep):
+   context.inventory_page.acessar_carrinho()
+   context.cart_page = CartPage(context.driver)
    context.cart_page.clicar_checkout()
    context.checkout_page = CheckoutPage(context.driver)
    context.checkout_page.preencher_dados(nome, sobrenome, cep)
@@ -67,7 +73,6 @@ def step_impl(context, nome, sobrenome, cep):
    context.checkout_page = CheckoutPage(context.driver)
    context.checkout_page.preencher_dados(nome, sobrenome, cep)
 
-@then("devo ver uma mensagem de erro na finalização")
-def step_impl(context):
-   mensagem = context.checkout_page.obter_mensagem_erro()
-   assert mensagem is not None and mensagem != ""
+@then('devo ver uma mensagem de erro "{mensagem}"')
+def step_impl(context, mensagem):
+   assert mensagem in context.checkout_page.obter_mensagem_erro()

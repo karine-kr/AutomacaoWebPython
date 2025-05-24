@@ -41,4 +41,4 @@ Funcionalidade: Automação do site SauceDemo
    Quando faço login com usuário "problem_user" e senha "secret_sauce"
    E adiciono o produto "Sauce Labs Backpack" ao carrinho
    E tento finalizar a compra com os dados "karine", "teste", "12345"
-   Então devo ver uma mensagem de erro na finalização
+   Então devo ver uma mensagem de erro "Error: Last Name is required"
