@@ -1,17 +1,20 @@
 from selenium.webdriver.common.by import By
-from .base_page import BasePage
 
-class LoginPage(BasePage):
+class LoginPage:
    URL = "https://www.saucedemo.com/"
-   USERNAME = (By.ID, "user-name")
-   PASSWORD = (By.ID, "password")
-   LOGIN_BUTTON = (By.ID, "login-button")
-   ERROR_MESSAGE = (By.CSS_SELECTOR, ".error-message-container")
-   def load(self):
+   def __init__(self, driver):
+       self.driver = driver
+   def acessar(self):
        self.driver.get(self.URL)
-   def login(self, username, password):
-       self.fill(*self.USERNAME, username)
-       self.fill(*self.PASSWORD, password)
-       self.click(*self.LOGIN_BUTTON)
-   def get_error_message(self):
-       return self.get_text(*self.ERROR_MESSAGE)
+   def preencher_usuario(self, usuario: str):
+       self.driver.find_element(By.ID, "user-name").send_keys(usuario)
+   def preencher_senha(self, senha: str):
+       self.driver.find_element(By.ID, "password").send_keys(senha)
+   def clicar_login(self):
+       self.driver.find_element(By.ID, "login-button").click()
+   def login(self, usuario: str, senha: str):
+       self.preencher_usuario(usuario)
+       self.preencher_senha(senha)
+       self.clicar_login()
+   def obter_mensagem_erro(self) -> str:
+       return self.driver.find_element(By.CSS_SELECTOR, "[data-test='error']").text
